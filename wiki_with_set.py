@@ -18,12 +18,12 @@ async def get_links(session, page):
     async with session.get(page) as response:
         text = await response.text()
     soup = BeautifulSoup(text, "html.parser")
-    links = []
+    links = set()
     for link in soup.find_all("a", {"href": re.compile("\/wiki\/[\\w]+")}):
         if "wikipedia" not in link["href"] and "wikidata" not in link["href"] \
                 and "wikimedia" not in link["href"] and not re.match("\/wiki\/\d+_", link["href"]):
             if link["href"] != page:
-                links.append('https://ru.wikipedia.org' + link["href"])
+                links.add('https://ru.wikipedia.org' + link["href"])
     return links
 
 
